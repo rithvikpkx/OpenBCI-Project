@@ -56,7 +56,7 @@ while True:
     # print("Establishing connection with hand...")
 
 
-    MINDFULNESS_THRESHOLD = 0.20
+    MINDFULNESS_THRESHOLD = 0.39
     if mindfulness_level > MINDFULNESS_THRESHOLD:
         time.sleep(3)
         ser.write(str(99).encode())

@@ -1,3 +1,0 @@
-Blinking : 1
-
-Hand Squeezing: 14

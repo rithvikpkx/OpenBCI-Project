@@ -1,0 +1,14 @@
+Parameter Info:
+
+    Headset Dongle Serial Port Address = "/dev/cu.usbserial-DP04WFZS"
+
+    Arduino-Hand Serial Port Address = "/dev/cu.usbmodem101"
+
+    Board_ID for Cyton-Daisy = 2
+
+
+Channel Info:
+
+    Blinking : 1
+
+    Hand Squeezing: 14
