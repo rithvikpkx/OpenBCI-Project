@@ -12,21 +12,23 @@ BOARD_ID = 2
 board = BoardShim(BOARD_ID, params)
 sampling_rate = BoardShim.get_sampling_rate(BOARD_ID)
 BoardShim.disable_board_logger()
+channels = board.get_eeg_channels(BOARD_ID)
+
+board.prepare_session()
+board.start_stream()
 
 def get_data():
-    board.prepare_session()
-    board.start_stream()
-    time.sleep(4)
+    time.sleep(5)
     data = board.get_board_data()
-    board.stop_stream()
-    board.release_session()
 
     return data
 
-while True:
-    sampling_rate = BoardShim.get_sampling_rate(BOARD_ID)
+mindfulness_params = BrainFlowModelParams(BrainFlowMetrics.MINDFULNESS.value,
+                                                BrainFlowClassifiers.DEFAULT_CLASSIFIER.value)
+mindfulness = MLModel(mindfulness_params)
+mindfulness.prepare()
 
-    channels = board.get_eeg_channels(BOARD_ID)
+while True:
     bands = DataFilter.get_avg_band_powers(get_data(), channels, sampling_rate, True)
     # print("band for band")
     #print(bands)
@@ -34,10 +36,5 @@ while True:
     # print('feature vector')
     # print(feature_vector)
 
-    mindfulness_params = BrainFlowModelParams(BrainFlowMetrics.MINDFULNESS.value,
-                                                    BrainFlowClassifiers.DEFAULT_CLASSIFIER.value)
-    mindfulness = MLModel(mindfulness_params)
-    mindfulness.prepare()
     mindfulness_level = mindfulness.predict(feature_vector)
-    mindfulness.release()
     print('Mindfulness: ' + str(mindfulness_level))
