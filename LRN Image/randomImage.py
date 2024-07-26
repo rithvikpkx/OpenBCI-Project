@@ -2,6 +2,7 @@ from PIL import Image, ImageTk
 import tkinter as tk
 import random
 import datetime
+import time
 
 
 # List of image file paths
@@ -13,9 +14,6 @@ file = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/dataLog.txt", 
 # Function to display a random image
 def display_random_image():
     random_image = random.choice(image_files)
-    ct = datetime.datetime.now()
-    print(str(ct) + "  ------->  " + str(image_files.index(random_image)))
-    file.write(str(str(ct) + "  ------->  " + str(image_files.index(random_image)) + "\n"))
     # 0 --> left
     # 1 --> none
     # 2 --> right
@@ -25,6 +23,14 @@ def display_random_image():
     img_tk = ImageTk.PhotoImage(img)
     label.config(image=img_tk)
     label.image = img_tk
+
+    ct = str(datetime.datetime.now())
+    ts = str(time.time())
+    # rounded_timestamp = ct[:-3]
+    write_msg = ct + "  ------->  " + ts + "  ------->  " + str(image_files.index(random_image)) + "\n"
+    file.write(write_msg)
+    print(str(ct) + "  ------->  " + str(ts) + "  ------->  " + str(image_files.index(random_image)))
+
     # Schedule next image display after a random interval
     random_interval = random.randint(2, 4)  # Change interval range as needed
     root.after(random_interval * 1000, display_random_image)
