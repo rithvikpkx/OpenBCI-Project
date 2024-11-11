@@ -25,11 +25,12 @@ for index in range(1, len(lrlines)):
     upperTimestamp = float(lrlines[index].split("  ------->  ")[1])
 
     # Establishes which action to match to within the timestamp range
-    if(int(lrlines[index - 1].split("  ------->  ")[2]) == 0):
+    currentActionIndex = int(lrlines[index - 1].split("  ------->  ")[2])
+    if(currentActionIndex == 0):
         currentAction = "Left"
-    elif(int(lrlines[index - 1].split("  ------->  ")[2]) == 1):
+    elif(currentActionIndex == 1):
         currentAction = "None"
-    else:
+    elif(currentActionIndex == 2):
         currentAction = "Right"
 
     # Loops through every relevant line of the eeg_file    
@@ -40,4 +41,4 @@ for index in range(1, len(lrlines)):
         # Checks whether currect timestamp is within the desired timestamp range
         if (eegTimestamp >= lowerTimestamp) and (eegTimestamp < upperTimestamp):
                 # Writes the appropriate eeg, timestamp, and direction data to the output file if timestamp is within the range
-                labeledData.write(str((currentAction, str(lowerTimestamp), str(eegTimestamp), str(upperTimestamp), str(eeglineArray[1:16]))) + "\n")
+                labeledData.write(str((str(currentActionIndex), currentAction, str(lowerTimestamp), str(eegTimestamp), str(upperTimestamp), str(eeglineArray[1:16]))) + "\n")
