@@ -25,7 +25,8 @@ def display_random_image():
     label.image = img_tk
 
     ct = str(datetime.datetime.now())
-    ts = str(time.time())
+    ts = str(int(time.time() * 1000))
+
     # rounded_timestamp = ct[:-3]
     write_msg = ct + "  ------->  " + ts + "  ------->  " + str(image_files.index(random_image)) + "\n"
     file.write(write_msg)

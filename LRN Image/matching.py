@@ -1,16 +1,17 @@
 # eeg_file = open("/Users/rithvikpraveenkumar/Documents/OpenBCI_GUI/Recordings/OpenBCISession_2024-07-25_22-30-57/OpenBCI-RAW-2024-07-25_22-31-22.txt", "r+")
-eeg_file = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/eegTest.txt", "r+")
+# /Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/
+eeg_file = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/EEGData.txt", "r")
 # lr_file = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/dataLog.txt", "r+")
-lr_file = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/dataTest.txt", "r+")
+lr_file = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/LRNImageData.txt", "r")
 
-matched_file = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/matched.txt", "w+")
+labeledData = open("/Users/rithvikpraveenkumar/OpenBCI Project/LRN Image/LabeledData.txt", "w")
 
 lrlines = lr_file.readlines()
 eeglines = eeg_file.readlines()
 
 # eeglines = templines[5:]
 
-dict = {"Left" : [], "None" : [], "Right" : []} # Dictionary to store all eeg data corresponding to action
+# dict = {"Left" : [], "None" : [], "Right" : []} # Dictionary to store all eeg data corresponding to action
 
 
 
@@ -28,17 +29,20 @@ for index in range(1, len(lrlines)):
     else:
         currentAction = "Right"
         
+    for eegline in range(5, len(eeglines)):
+        eeglineArray = eeglines[eegline].split(", ")
+        eegTimestamp = float(eeglineArray[-3])
+        # eegchar = str(eeglineArray[0])
+        # timeStamp = str(eeglineArray[-1])
+        if eegTimestamp >= lowerTimestamp:
+            if eegTimestamp < upperTimestamp:
+                print(lowerTimestamp, eegTimestamp, upperTimestamp)
+                # dict[currentAction].append(str(eegline) + " ***** " + str(eegTimestamp))
+                labeledData.write(str((currentAction, str(lowerTimestamp), str(eegTimestamp), str(upperTimestamp), str(eeglineArray[1:16]))) + "\n")
 
-    for eegline in eeglines:
-        eegTimestamp = float(eegline.split(", ")[-3])
-
-        if eegTimestamp >= lowerTimestamp and eegTimestamp < upperTimestamp:
-            # print(index, eegTimestamp, lowerTimestamp, upperTimestamp, int(lrlines[index].split("  ------->  ")[2]), eegline.split(", ")[0] + " ***** " + eegline.split(", ")[-3])
-            dict[currentAction].append(eegline.split(", ")[0] + " ***** " + str(eegTimestamp))
 
 
-
-print(dict.items())
+# print(dict.items())
 
 
 
